@@ -18,7 +18,7 @@ argument-hint: <project description>
 **목표**: 프로젝트를 이해하고 Claude 환경 설정에 필요한 정보를 수집합니다.
 
 **액션**:
-1. 할 일 목록 생성 (Phase 1~4 전체)
+1. 할 일 목록 생성 (Phase 1~5 전체)
 2. $ARGUMENTS가 있으면 초기 프로젝트 설명으로 사용. 없으면 먼저 프로젝트 설명을 요청
 3. 아래 질문 클러스터를 **순서대로** 진행 (이전 클러스터 답변 후 다음 진행):
 
@@ -419,6 +419,7 @@ MEMORY_DIR="$HOME/.claude/projects/${ENCODED_PATH}/memory"
 # Memory Index — <프로젝트명>
 
 ## 프로젝트 현황
+- [plan.md](plan.md) — 프로젝트 구현 로드맵 및 단계별 태스크 (Phase 5에서 생성)
 - [session-log.md](session-log.md) — 완료된 작업 로그 및 현재 진행 상황
 - [architecture.md](architecture.md) — 결정된 아키텍처·설계 사항
 
@@ -531,12 +532,12 @@ type: feedback
 
 `requirements.md`의 `Permissions`와 `Hooks` 섹션 내용을 위 기본값에 **병합**하여 최종 파일 작성.
 
-### 완료 보고
+### Phase 4 완료
 
-모든 파일 생성 후 Setup Complete 매니페스트 출력:
+생성된 파일 목록 출력 후 Phase 5로 전환:
 
 ```
-## ✅ Setup Complete
+## ✅ Phase 4 완료 — 환경 구성
 
 생성된 파일:
 | 파일 | 설명 |
@@ -544,30 +545,112 @@ type: feedback
 | CLAUDE.md | 프로젝트 가이드 + Quality Gates |
 | .claude/agents/code-reviewer.md | 코드 품질 리뷰 에이전트 |
 | ... | ... |
+```
 
-## 🚀 바로 시작하기
+**[게이트]** "환경 구성이 완료됐습니다. 이제 구현 계획을 Plan Mode로 수립하겠습니다. 진행할까요?"
+→ **사용자 확인을 받기 전까지 Phase 5로 진행하지 마세요.**
 
-**주요 커맨드 (Quality Gates)**
-| 시점 | 커맨드/에이전트 | 용도 |
-|------|----------------|------|
-| 기능 구현 완료 후 | `/simplify` | 코드 정리, 중복 제거 |
-| 기능 구현 완료 후 | `code-reviewer` 에이전트 | 품질·컨벤션 검토 |
-| 보안 코드 변경 후 | `security-reviewer` 에이전트 | OWASP 취약점 검토 |
-| PR 생성 전 | `/code-review` | PR 전체 리뷰 |
-| CLAUDE.md 수정 필요 시 | `/revise-claude-md` | 가이드 업데이트 |
+---
 
-다음 단계:
-- CLAUDE.md를 팀과 공유하세요 (git에 커밋)
-- .claude/settings.json의 hooks가 정상 동작하는지 확인하세요
-- 보안 크리티컬 코드 작성 시 security-reviewer를 먼저 호출하세요
+## Phase 5: 프로젝트 계획 수립
+
+**목표**: requirements.md와 생성된 환경을 바탕으로 구체적인 구현 로드맵을 Plan Mode로 수립하고, `plan.md`로 저장한 뒤 장기 메모리에 등록합니다.
+
+**액션**:
+
+### 1. Plan Mode 진입
+
+EnterPlanMode 도구를 실행합니다.
+
+### 2. 계획 수립 (Plan Mode 내에서)
+
+requirements.md를 분석하여 다음을 결정합니다:
+- 프로젝트를 독립적인 Phase/Milestone으로 분해
+- 각 Phase의 핵심 태스크와 완료 기준
+- Phase 간 의존성 순서
+- 복잡도가 높거나 리스크가 있는 항목
+
+### 3. Plan Mode 종료
+
+ExitPlanMode 도구를 실행합니다.
+
+### 4. plan.md 생성
+
+프로젝트 루트에 `plan.md` 작성 (아래 구조 사용):
+
+```markdown
+# Plan: <프로젝트명>
+
+Generated: <날짜>
+Status: 🔵 Planning
+
+## Overview
+
+<프로젝트 목적 및 이 계획의 범위>
+
+## Implementation Phases
+
+### Phase 1: <첫 번째 마일스톤 명>
+
+**목표**: <이 Phase에서 달성할 것>
+
+**태스크**:
+- [ ] <태스크 1>
+- [ ] <태스크 2>
+- [ ] <태스크 3>
+
+**완료 기준**: <이 Phase가 완료됐다고 볼 수 있는 기준>
+
+### Phase 2: <두 번째 마일스톤 명>
+
+**목표**: ...
+
+**태스크**:
+- [ ] ...
+
+**완료 기준**: ...
+
+<Phase 수는 프로젝트 규모에 맞게 조정>
+
+## Risks & Considerations
+
+| 리스크 | 영향 | 대응 방안 |
+|--------|------|----------|
+| <리스크 1> | High/Med/Low | <대응> |
+
+## Quality Gates (각 Phase 완료 시 필수)
+
+- `/simplify` → `code-reviewer` 에이전트 호출
+- 보안 코드 변경 시: `security-reviewer` 에이전트 호출
+- PR 생성 전: `/code-review` 실행
+```
+
+### 5. MEMORY.md 업데이트
+
+`~/.claude/projects/<encoded-path>/memory/MEMORY.md`에 plan.md 포인터가 없으면 추가:
+
+```markdown
+- [plan.md](plan.md) — 프로젝트 구현 로드맵 및 단계별 태스크
+```
+
+### 완료 보고
+
+```
+## 🚀 Setup Complete
+
+생성된 파일:
 | 파일 | 설명 |
 |------|------|
-| CLAUDE.md | 프로젝트 가이드 |
+| CLAUDE.md | 프로젝트 가이드 + Quality Gates |
+| requirements.md | 수집된 요구사항 |
+| plan.md | 구현 로드맵 (장기 메모리 등록 완료) |
 | .claude/agents/code-reviewer.md | 코드 품질 리뷰 에이전트 |
 | ... | ... |
 
-다음 단계:
-- CLAUDE.md를 팀과 공유하세요 (git에 커밋)
-- .claude/settings.json 권한을 검토하세요
-- /deep-research <기술명> 으로 심층 리서치를 시작하세요
+## 다음 단계
+
+1. plan.md의 Phase 1 태스크부터 시작하세요
+2. CLAUDE.md를 팀과 공유하세요 (git 커밋)
+3. 각 Phase 완료 후 Quality Gates 실행 (plan.md 참조)
+4. 컨텍스트가 많이 소모되면 `/clear` 전 memory에 진행 상황 저장
 ```
