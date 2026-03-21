@@ -1,0 +1,10 @@
+{
+  "name": "claude-setup",
+  "version": "1.0.0",
+  "description": "Guided Claude environment setup for new projects. Automates CLAUDE.md, agents, skills, memory, and permissions configuration through interactive requirements gathering and intelligent skill matching.",
+  "author": {
+    "name": "user"
+  },
+  "license": "MIT",
+  "keywords": ["setup", "scaffolding", "agents", "skills", "memory", "onboarding"]
+}
