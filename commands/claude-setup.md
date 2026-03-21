@@ -419,9 +419,10 @@ MEMORY_DIR="$HOME/.claude/projects/${ENCODED_PATH}/memory"
 # Memory Index — <프로젝트명>
 
 ## 프로젝트 현황
-- [plan.md](plan.md) — 프로젝트 구현 로드맵 및 단계별 태스크 (docs/plan.md의 메모리 사본, Phase 5에서 생성)
+
 - [session-log.md](session-log.md) — 완료된 작업 로그 및 현재 진행 상황
 - [architecture.md](architecture.md) — 결정된 아키텍처·설계 사항
+- `docs/plan.md` — 구현 로드맵 및 단계별 태스크 (Phase 5에서 생성)
 
 ## 컨벤션 & 피드백
 - [feedback-conventions.md](feedback-conventions.md) — 코드 스타일, 네이밍 규칙
@@ -554,7 +555,7 @@ type: feedback
 
 ## Phase 5: 프로젝트 계획 수립
 
-**목표**: `docs/requirements.md`와 생성된 환경을 바탕으로 구체적인 구현 로드맵을 Plan Mode로 수립하고, `docs/plan.md`로 저장한 뒤 장기 메모리에도 등록합니다.
+**목표**: `docs/requirements.md`와 생성된 환경을 바탕으로 구체적인 구현 로드맵을 Plan Mode로 수립하고 `docs/plan.md`로 저장합니다.
 
 **액션**:
 
@@ -627,13 +628,12 @@ Status: 🔵 Planning
 
 ### 5. MEMORY.md 업데이트
 
-`~/.claude/projects/<encoded-path>/memory/MEMORY.md`에 plan.md 포인터가 없으면 추가:
+Phase 4에서 생성된 MEMORY.md에 `docs/plan.md` 항목이 이미 포함되어 있으므로 별도 추가 불필요.
+항목이 없는 경우에만 추가:
 
 ```markdown
-- [plan.md](plan.md) — 프로젝트 구현 로드맵 및 단계별 태스크 (프로젝트의 docs/plan.md와 동기화)
+- `docs/plan.md` — 구현 로드맵 및 단계별 태스크
 ```
-
-그리고 `~/.claude/projects/<encoded-path>/memory/plan.md`에 `docs/plan.md`와 동일한 내용을 복사하여 저장합니다 (새 세션에서 플랜 즉시 참조 가능하도록).
 
 ### 완료 보고
 
@@ -645,7 +645,7 @@ Status: 🔵 Planning
 |------|------|
 | CLAUDE.md | 프로젝트 가이드 + Quality Gates |
 | docs/requirements.md | 수집된 요구사항 |
-| docs/plan.md | 구현 로드맵 (장기 메모리 등록 완료) |
+| docs/plan.md | 구현 로드맵 |
 | .claude/agents/code-reviewer.md | 코드 품질 리뷰 에이전트 |
 | ... | ... |
 

@@ -7,7 +7,7 @@ One command — `/claude-setup <project description>` — and you get:
 - Automatic research for relevant official/community skills
 - Auto-configuration of `CLAUDE.md`, agents, skills, memory, and permissions
 - Stack-aware agents dynamically generated for your project (e.g. backend developer, frontend developer)
-- Implementation roadmap created in Plan Mode and saved to `docs/plan.md` with long-term memory registration
+- Implementation roadmap created in Plan Mode, saved to `docs/plan.md`, and indexed in long-term memory
 
 ---
 
@@ -110,8 +110,7 @@ your-project/
     └── settings.json                # Permissions + hooks
 
 ~/.claude/projects/<project>/memory/
-├── MEMORY.md                        # Index (auto-loaded each session)
-├── plan.md                          # Mirror of docs/plan.md
+├── MEMORY.md                        # Index with pointer to docs/plan.md
 └── <seed files>.md
 ```
 
