@@ -3,10 +3,10 @@
 > 새 프로젝트를 위한 Claude 환경을 자동으로 설정해주는 Claude Code 플러그인
 
 `/claude-setup <프로젝트 설명>` 한 번으로:
-- 대화형 요구사항 수집 및 `requirements.md` 생성
+- 대화형 요구사항 수집 및 `docs/requirements.md` 생성
 - 관련 공식/커뮤니티 skill 자동 리서치
 - `CLAUDE.md`, agents, skills, memory, 권한 설정 자동 구성
-- Plan Mode로 구현 로드맵 수립 및 `plan.md` 장기 메모리 등록
+- Plan Mode로 구현 로드맵 수립 및 `docs/plan.md` 장기 메모리 등록
 
 ---
 
@@ -40,10 +40,10 @@ claude plugin install ./claude-setup
 | Phase | 내용 | 출력 |
 |-------|------|------|
 | 1 | 대화형 요구사항 수집 (3개 질문 클러스터) | 요약 테이블 |
-| 2 | requirements.md 생성 | `requirements.md` |
+| 2 | requirements.md 생성 | `docs/requirements.md` |
 | 3 | 번들/외부 skill 리서치 및 추천 | 추천 테이블 |
 | 4 | Claude 환경 파일 생성 | CLAUDE.md, agents, skills, memory, settings.json |
-| 5 | Plan Mode로 구현 계획 수립 | `plan.md` (장기 메모리 등록) |
+| 5 | Plan Mode로 구현 계획 수립 | `docs/plan.md` (장기 메모리 등록) |
 
 각 Phase 전환 시 사용자 확인을 요청합니다.
 
@@ -82,8 +82,9 @@ claude plugin install ./claude-setup
 ```
 your-project/
 ├── CLAUDE.md                        # 프로젝트 가이드
-├── requirements.md                  # 수집된 요구사항
-├── plan.md                          # 구현 로드맵 (Phase 5 생성)
+├── docs/
+│   ├── requirements.md              # 수집된 요구사항
+│   └── plan.md                      # 구현 로드맵 (Phase 5 생성)
 └── .claude/
     ├── agents/
     │   ├── code-reviewer.md
@@ -94,7 +95,7 @@ your-project/
 
 ~/.claude/projects/<project>/memory/
 ├── MEMORY.md                        # plan.md 포인터 포함
-├── plan.md                          # 구현 로드맵 (메모리 등록)
+├── plan.md                          # docs/plan.md의 메모리 사본
 └── <seed 파일들>.md
 ```
 

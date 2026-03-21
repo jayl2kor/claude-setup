@@ -1,6 +1,6 @@
 # claude-setup Plugin
 
-새 프로젝트의 Claude 환경 설정을 자동화하는 플러그인. `/claude-setup <설명>` 한 번으로 대화형 요구사항 수집 → requirements.md 생성 → skill 리서치 → Claude 환경 자동 구성 → Plan Mode 구현 계획 수립까지 수행한다.
+새 프로젝트의 Claude 환경 설정을 자동화하는 플러그인. `/claude-setup <설명>` 한 번으로 대화형 요구사항 수집 → `docs/requirements.md` 생성 → skill 리서치 → Claude 환경 자동 구성 → Plan Mode로 `docs/plan.md` 구현 계획 수립까지 수행한다.
 
 ## 구조
 
@@ -29,7 +29,7 @@ claude-setup/
 - **Phase 게이트**: Phase 1→2, 2→3, 3→4, 4→5 각 전환 시 사용자 확인 필수. 확인 전 절대 진행 금지
 - **번들 우선**: Phase 3에서 번들 스킬 먼저 매칭, 미매칭 항목만 외부 리서치
 - **병렬 제한**: domain-researcher 에이전트 최대 3개 동시 실행
-- **파일 생성 순서**: CLAUDE.md → agents → skills → memory → settings.json → plan.md (의존성 순서 엄수)
+- **파일 생성 순서**: CLAUDE.md → agents → skills → memory → settings.json → docs/plan.md (의존성 순서 엄수)
 - **경로 참조**: 하드코딩 금지, `${CLAUDE_PLUGIN_ROOT}` 사용
 - **언어 감지**: 사용자 입력 언어로 대화 진행 (한국어 입력 → 한국어 응답)
 

@@ -54,17 +54,17 @@ argument-hint: <project description>
 | 외부 서비스 | ... |
 ```
 
-**[게이트]** "이 내용이 정확한가요? 수정이 필요하면 알려주세요. 확인해 주시면 requirements.md를 생성하겠습니다."
+**[게이트]** "이 내용이 정확한가요? 수정이 필요하면 알려주세요. 확인해 주시면 docs/requirements.md를 생성하겠습니다."
 → **사용자 확인을 받기 전까지 Phase 2로 진행하지 마세요.**
 
 ---
 
-## Phase 2: requirements.md 생성
+## Phase 2: docs/requirements.md 생성
 
 **목표**: Phase 1에서 수집한 내용을 Phase 4에서 직접 소비 가능한 구조화된 문서로 작성합니다.
 
 **액션**:
-1. 프로젝트 루트에 `requirements.md` 작성 (아래 스키마 사용)
+1. `docs/requirements.md` 작성 (docs/ 디렉터리 없으면 먼저 생성, 아래 스키마 사용)
 2. `Skills Needed`와 `Agents Needed`를 **아래 결정 규칙**으로 채울 것
    - `source` 컬럼 값: `bundled` / `official` / `community` / `custom` (Phase 3에서 확정)
 3. 파일 작성 후 내용 요약 출력
@@ -162,7 +162,7 @@ deny: []
 |-------|---------|--------|
 ```
 
-**[게이트]** "requirements.md 파일을 검토해 주세요. 수정이 필요하면 알려주세요. 확인해 주시면 스킬 리서치를 시작하겠습니다."
+**[게이트]** "docs/requirements.md 파일을 검토해 주세요. 수정이 필요하면 알려주세요. 확인해 주시면 스킬 리서치를 시작하겠습니다."
 → **사용자 확인을 받기 전까지 Phase 3으로 진행하지 마세요.**
 
 ---
@@ -173,7 +173,7 @@ deny: []
 
 ### 3-1. 번들 매칭 (먼저 실행)
 
-`requirements.md`의 `Skills Needed`와 `Agents Needed`를 이 플러그인의 번들 목록과 대조합니다.
+`docs/requirements.md`의 `Skills Needed`와 `Agents Needed`를 이 플러그인의 번들 목록과 대조합니다.
 
 **번들된 Agents**: `code-reviewer`, `security-reviewer`, `domain-researcher`
 
@@ -225,7 +225,7 @@ deny: []
 
 ## Phase 4: 설정 실행
 
-**목표**: requirements.md와 리서치 결과를 바탕으로 Claude 환경 파일들을 생성합니다.
+**목표**: `docs/requirements.md`와 리서치 결과를 바탕으로 Claude 환경 파일들을 생성합니다.
 
 **반드시 아래 순서를 지켜서 생성합니다** (의존성 순서):
 
@@ -419,7 +419,7 @@ MEMORY_DIR="$HOME/.claude/projects/${ENCODED_PATH}/memory"
 # Memory Index — <프로젝트명>
 
 ## 프로젝트 현황
-- [plan.md](plan.md) — 프로젝트 구현 로드맵 및 단계별 태스크 (Phase 5에서 생성)
+- [plan.md](plan.md) — 프로젝트 구현 로드맵 및 단계별 태스크 (docs/plan.md의 메모리 사본, Phase 5에서 생성)
 - [session-log.md](session-log.md) — 완료된 작업 로그 및 현재 진행 상황
 - [architecture.md](architecture.md) — 결정된 아키텍처·설계 사항
 
@@ -484,7 +484,7 @@ type: feedback
 (작업 중 버그·해결책 발견 시 여기에 기록)
 ```
 
-`requirements.md`의 `Memory Seeds` 항목에 추가 seed가 있으면 위 기본 파일들에 병합하여 생성.
+`docs/requirements.md`의 `Memory Seeds` 항목에 추가 seed가 있으면 위 기본 파일들에 병합하여 생성.
 
 ### 5. .claude/settings.json
 
@@ -514,7 +514,7 @@ type: feedback
 }
 ```
 
-**보안 크리티컬 프로젝트 추가 hook** (`requirements.md`에 보안 관련 항목이 있는 경우):
+**보안 크리티컬 프로젝트 추가 hook** (`docs/requirements.md`에 보안 관련 항목이 있는 경우):
 
 ```json
 "PostToolUse": [
@@ -530,7 +530,7 @@ type: feedback
 ]
 ```
 
-`requirements.md`의 `Permissions`와 `Hooks` 섹션 내용을 위 기본값에 **병합**하여 최종 파일 작성.
+`docs/requirements.md`의 `Permissions`와 `Hooks` 섹션 내용을 위 기본값에 **병합**하여 최종 파일 작성.
 
 ### Phase 4 완료
 
@@ -554,7 +554,7 @@ type: feedback
 
 ## Phase 5: 프로젝트 계획 수립
 
-**목표**: requirements.md와 생성된 환경을 바탕으로 구체적인 구현 로드맵을 Plan Mode로 수립하고, `plan.md`로 저장한 뒤 장기 메모리에 등록합니다.
+**목표**: `docs/requirements.md`와 생성된 환경을 바탕으로 구체적인 구현 로드맵을 Plan Mode로 수립하고, `docs/plan.md`로 저장한 뒤 장기 메모리에도 등록합니다.
 
 **액션**:
 
@@ -564,7 +564,7 @@ EnterPlanMode 도구를 실행합니다.
 
 ### 2. 계획 수립 (Plan Mode 내에서)
 
-requirements.md를 분석하여 다음을 결정합니다:
+`docs/requirements.md`를 분석하여 다음을 결정합니다:
 - 프로젝트를 독립적인 Phase/Milestone으로 분해
 - 각 Phase의 핵심 태스크와 완료 기준
 - Phase 간 의존성 순서
@@ -574,9 +574,9 @@ requirements.md를 분석하여 다음을 결정합니다:
 
 ExitPlanMode 도구를 실행합니다.
 
-### 4. plan.md 생성
+### 4. docs/plan.md 생성
 
-프로젝트 루트에 `plan.md` 작성 (아래 구조 사용):
+`docs/plan.md` 작성 (아래 구조 사용):
 
 ```markdown
 # Plan: <프로젝트명>
@@ -630,8 +630,10 @@ Status: 🔵 Planning
 `~/.claude/projects/<encoded-path>/memory/MEMORY.md`에 plan.md 포인터가 없으면 추가:
 
 ```markdown
-- [plan.md](plan.md) — 프로젝트 구현 로드맵 및 단계별 태스크
+- [plan.md](plan.md) — 프로젝트 구현 로드맵 및 단계별 태스크 (프로젝트의 docs/plan.md와 동기화)
 ```
+
+그리고 `~/.claude/projects/<encoded-path>/memory/plan.md`에 `docs/plan.md`와 동일한 내용을 복사하여 저장합니다 (새 세션에서 플랜 즉시 참조 가능하도록).
 
 ### 완료 보고
 
@@ -642,15 +644,15 @@ Status: 🔵 Planning
 | 파일 | 설명 |
 |------|------|
 | CLAUDE.md | 프로젝트 가이드 + Quality Gates |
-| requirements.md | 수집된 요구사항 |
-| plan.md | 구현 로드맵 (장기 메모리 등록 완료) |
+| docs/requirements.md | 수집된 요구사항 |
+| docs/plan.md | 구현 로드맵 (장기 메모리 등록 완료) |
 | .claude/agents/code-reviewer.md | 코드 품질 리뷰 에이전트 |
 | ... | ... |
 
 ## 다음 단계
 
-1. plan.md의 Phase 1 태스크부터 시작하세요
+1. docs/plan.md의 Phase 1 태스크부터 시작하세요
 2. CLAUDE.md를 팀과 공유하세요 (git 커밋)
-3. 각 Phase 완료 후 Quality Gates 실행 (plan.md 참조)
+3. 각 Phase 완료 후 Quality Gates 실행 (docs/plan.md 참조)
 4. 컨텍스트가 많이 소모되면 `/clear` 전 memory에 진행 상황 저장
 ```
