@@ -81,7 +81,7 @@ argument-hint: <project description>
 |------|----------|
 | API 서버 (FastAPI, Express, Spring, Go HTTP 등) | Skill: `backend-patterns` |
 | React / Vue / Next.js / Svelte / 프론트엔드 프레임워크 | Skill: `frontend-patterns` |
-| UI 컴포넌트 설계 또는 디자인 시스템 언급 | Agent: `ui-designer`, `ux-designer` |
+| UI 컴포넌트 설계 또는 디자인 시스템 언급 | Agent: `ui-designer`, `ux-designer` + 외부 스킬: `nextlevelbuilder/ui-ux-pro-max-skill` 설치 권장 |
 | 풀스택 (프론트+백 모두) | 위 frontend + backend 둘 다 |
 | 웹 서비스 / 마케팅 사이트 / 콘텐츠 중심 서비스 | Skill: `seo` |
 | Next.js / Nuxt / 서버사이드 렌더링 언급 | Skill: `seo` |
@@ -176,6 +176,9 @@ deny: []
 `docs/requirements.md`의 `Skills Needed`와 `Agents Needed`를 이 플러그인의 번들 목록과 대조합니다.
 
 **번들된 Agents**: `code-reviewer`, `security-reviewer`, `domain-researcher`, `ui-designer`, `ux-designer`
+
+> `ui-designer` / `ux-designer` 에이전트는 `nextlevelbuilder/ui-ux-pro-max-skill` 플러그인이 설치되어 있으면 이를 우선 활용합니다. UI/UX가 포함된 프로젝트에서는 Phase 3 결과에 이 스킬 설치를 권장하세요:
+> `/plugin marketplace add nextlevelbuilder/ui-ux-pro-max-skill`
 
 **번들된 Skills**:
 - `backend-patterns` — API, DB, 마이크로서비스 아키텍처
