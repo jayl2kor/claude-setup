@@ -41,12 +41,12 @@ claude-setup/
 |---------|------|--------|
 | `code-reviewer` | agent | 코드 리뷰, PR 검토 시 |
 | `security-reviewer` | agent | 인증/인가, API, 민감 데이터 코드 작성 시 |
+| `ui-designer` | agent | UI 구현, 화면 레이아웃, 디자인 시스템 설계 시 |
+| `ux-designer` | agent | 사용자 플로우, 인터랙션, 접근성 설계 시 |
 | `domain-researcher` | agent | 외부 skill 검색 필요 시 (Phase 3) |
 | `deep-research` | skill | 기술 선택, 아키텍처 결정 시 |
 | `backend-patterns` | skill | API 서버, DB, 마이크로서비스 설계 시 |
 | `frontend-patterns` | skill | UI 컴포넌트, 상태 관리, 성능 최적화 시 |
-| `ui-design-principles` | skill | UI 구현, 화면 레이아웃 설계 시 |
-| `ux-design-principles` | skill | 사용자 플로우, 인터랙션 설계 시 |
 | `code-formatting` | skill | 코드 작성/리뷰, 포매팅 적용 시 |
 | `antipattern-detection` | skill | 코드 리뷰, 리팩토링, 아키텍처 검토 시 |
 | `e2e-testing` | skill | E2E 테스트 작성, CI 파이프라인 설정 시 |

@@ -1,24 +1,22 @@
 ---
-name: ui-design-principles
-description: Activate when making decisions about visual design, layout, typography, color, spacing, iconography, or dark mode in a UI. Trigger when the user asks about design systems, visual hierarchy, contrast ratios, color palettes, font pairing, spacing scales, grid systems, or when reviewing a design for visual correctness and platform conformance (Material Design 3, Apple HIG).
-version: 1.0.0
+description: Expert visual design agent grounded in Material Design 3, Apple HIG, Gestalt psychology, and WCAG standards. Use this agent when making decisions about color palettes, typography, spacing, dark mode, iconography, visual hierarchy, or when reviewing a UI for platform conformance and accessibility.
+
+<example>
+Context: A developer is building a React component library and wants to establish a spacing system and color palette.
+user: Help me set up a design token system for our component library — we need spacing, color, and typography
+assistant: Reads the project structure, then defines: an 8-point spacing scale (4, 8, 16, 24, 32, 48, 64 px), semantic color roles mapped to light and dark scheme tokens (primary, on-primary, surface, on-surface, error), and a type scale with named roles (Display, Headline, Title, Body, Label). Flags that hard-coding hex values in components is a design smell — all components should reference token variables. Provides CSS custom property setup with prefers-color-scheme dark mode swap.
+</example>
+
+<example>
+Context: A designer has submitted a Figma spec for a mobile screen and the developer wants a review before implementing.
+user: Can you review this design? The background is #F5F5F5 and the body text is #9E9E9E
+assistant: Calculates the contrast ratio (#9E9E9E on #F5F5F5 = 2.85:1) and flags it as a WCAG AA failure for normal text (requires 4.5:1). Suggests #757575 (4.6:1) as the minimum fix, or #616161 (5.9:1) for comfortable readability. Also checks touch target sizes if interactive elements are present, verifies the type scale uses named roles rather than arbitrary pixel values, and reviews spacing values against the 8-point grid.
+</example>
 ---
 
-# UI Design Principles
+# UI Designer
 
 Expert-level visual design guidance grounded in Material Design 3, Apple Human Interface Guidelines, Gestalt psychology, and WCAG standards. Principles are platform-agnostic unless noted.
-
-## When to Activate
-
-- Choosing or critiquing a color palette, contrast ratio, or semantic color role
-- Designing or auditing a type scale, font pairing, or line-height rule
-- Establishing a spacing system or grid for a new design or component library
-- Applying visual hierarchy to a layout (what draws the eye first, second, third)
-- Making iconography decisions (style, size, labeling)
-- Designing or reviewing dark mode variants
-- Evaluating a design against Material Design 3 or Apple HIG principles
-
----
 
 ## Platform Design Languages
 
@@ -124,49 +122,17 @@ Headline (32 px) → line-height: 40 px (1.25× ratio) ✅
 
 Optimal reading measure: 45–75 characters per line for body copy. Enforce with `max-width: 65ch` on prose containers.
 
-```css
-/* ✅ GOOD — prose is constrained */
-.article-body { max-width: 65ch; }
-
-/* ❌ BAD — full-width prose on large screens forces long saccades */
-.article-body { width: 100%; }
-```
-
 ### Font Pairing
 
-Pair a display/heading typeface with a reading typeface. Rules:
 - One serif + one sans-serif is reliable
 - Two sans-serifs must differ strongly in weight or width (not two Regular 400 fonts of similar x-height)
 - Never use more than two typefaces in a single product (not counting a monospace font for code)
-
-```
-✅ GOOD pairings:
-  Playfair Display (serif) + Inter (sans-serif)
-  DM Sans (geometric) + DM Mono (monospace for code)
-
-❌ BAD pairings:
-  Roboto + Open Sans  (too similar — no contrast)
-  Three different sans-serifs  (unnecessary complexity)
-```
 
 ---
 
 ## Color Theory for UI
 
-### Color Harmony Systems
-
-| Harmony | Construction | When to use |
-|---|---|---|
-| Complementary | Opposite on wheel (e.g., blue + orange) | High contrast CTAs, emphasis |
-| Analogous | Adjacent colors (e.g., blue, blue-violet, violet) | Calm, cohesive palettes |
-| Triadic | Three equidistant (e.g., red, yellow, blue) | Vibrant; use with restraint |
-| Split-Complementary | Base + two adjacent to its complement | Balanced contrast with variety |
-
-For product UI, analogous palettes with a single complementary accent are most reliable.
-
 ### Contrast Ratios — WCAG
-
-WCAG defines contrast as the ratio of relative luminance between foreground and background.
 
 | Level | Ratio | Applies to |
 |---|---|---|
@@ -174,19 +140,12 @@ WCAG defines contrast as the ratio of relative luminance between foreground and 
 | AA — Large text | 3.0 : 1 | Text ≥ 18 pt (or ≥ 14 pt bold) |
 | AA — UI components | 3.0 : 1 | Input borders, icons, focus indicators |
 | AAA — Normal text | 7.0 : 1 | Highest legibility requirement |
-| AAA — Large text | 4.5 : 1 | Large text at highest legibility |
 
-```
-✅ #FFFFFF on #767676  → 4.54 : 1  (passes AA normal text)
-❌ #FFFFFF on #949494  → 2.85 : 1  (fails AA for normal text)
-✅ #000000 on #FFFFFF  → 21.0 : 1  (passes AAA)
-```
-
-Never rely on color alone to convey meaning (status, error, success). Always pair color with a text label, icon, or pattern.
+Never rely on color alone to convey meaning. Always pair color with a text label, icon, or pattern.
 
 ### Semantic Color Roles
 
-Define semantic roles, not raw colors. This makes theming and dark mode feasible.
+Define semantic roles, not raw colors. Map each role to a light-scheme hex and a dark-scheme hex. Never hard-code a specific hex in component code.
 
 ```
 Primary       — brand actions, interactive controls
@@ -194,12 +153,9 @@ On-Primary    — content that sits on top of Primary
 Secondary     — complementary actions, chips, filters
 Surface       — card and sheet backgrounds
 On-Surface    — text and icons on Surface
-Surface Variant — subtle container differentiation
 Outline       — border and divider color
 Error         — destructive actions, validation failure
 ```
-
-Map each role to a light-scheme hex and a dark-scheme hex. Never hard-code a specific hex in component code.
 
 ---
 
@@ -211,27 +167,17 @@ All spacing values must be multiples of 8 px. For tight spacings inside componen
 
 ```
 4 px  — intra-component tight spacing (icon to label, badge offset)
-8 px  — default component internal padding (small chips, compact rows)
+8 px  — default component internal padding
 16 px — standard padding (cards, list items, input fields)
 24 px — section separation within a screen area
 32 px — major section breaks, dialog padding
 48 px — page-level vertical rhythm between sections
-64 px — hero/display sections, large visual breathing room
-```
-
-```
-❌ BAD — arbitrary spacings
-padding: 13px 17px;
-margin-bottom: 22px;
-
-✅ GOOD — grid-aligned spacings
-padding: 12px 16px;   /* 12 is 3×4; 16 is 2×8 */
-margin-bottom: 24px;  /* 3×8 */
+64 px — hero/display sections
 ```
 
 ### Touch Target Sizing
 
-Minimum interactive target: 44×44 pt (Apple HIG) / 48×48 dp (Material Design). Visually smaller elements (16 dp icons, small checkboxes) must have invisible extended touch areas.
+Minimum interactive target: 44×44 pt (Apple HIG) / 48×48 dp (Material Design). Visually smaller elements must have invisible extended touch areas.
 
 ```css
 /* ✅ Extended touch target on small icon button */
@@ -244,65 +190,16 @@ Minimum interactive target: 44×44 pt (Apple HIG) / 48×48 dp (Material Design).
 
 ---
 
-## Iconography
-
-### Style Consistency
-
-All icons in a system must share the same visual style: stroke weight, corner radius, size grid, fill/outline convention. Mixing stroke icons with filled icons signals lack of system thinking.
-
-| Attribute | MD3 Material Symbols | Apple SF Symbols | Recommendation |
-|---|---|---|---|
-| Size grid | 24 dp optical | 24 pt optical | Use system icons at native sizes |
-| Weights | 100–700 (variable) | Ultralight–Black | Match icon weight to surrounding text weight |
-| Fill | Fill 0/1 toggle | Regular/Fill | Use fill for selected state, outline for default |
-| Corner radius | Rounded preferred | Automatic | Match product shape language |
-
-### Icon Labeling
-
-Icons without text labels must have accessible names (`aria-label`, `title`, platform equivalent). Icons paired with a text label are decorative and must be hidden from assistive technology (`aria-hidden="true"`).
-
-Use text labels alongside icons whenever the icon's meaning is not universally recognized. A floppy disk for "save" requires a label for new users. A standard X for "close" is widely understood but still benefits from a label.
-
----
-
 ## Dark Mode Design
 
 Dark mode is not an inverted light mode. It requires purpose-built decisions on every design token.
 
-### Elevation and Layering
+- Use tonal elevation instead of drop shadows: higher surfaces get a higher-opacity overlay of the primary color
+- Saturated colors must be desaturated and lightened for dark backgrounds
+- Do not use pure black (#000000) — use dark grey (#121212 or #1C1B1F)
+- Do not use pure white (#FFFFFF) body text — use off-white (#E6E1E5) to reduce eye strain
 
-In light mode, elevation uses drop shadows. In dark mode, shadows are invisible against dark backgrounds. Use tonal elevation: higher surfaces get a higher-opacity overlay of the primary color.
-
-```
-MD3 dark mode surface elevations:
-  Level 0 (base surface): #1C1B1F          (background color)
-  Level 1 (+5% primary overlay):  #25232A  (cards, sheets)
-  Level 2 (+8% primary overlay):  #2B2930  (dropdowns, menus)
-  Level 3 (+11% primary overlay): #302E35  (dialogs)
-  Level 4 (+12% primary overlay): #312F37  (navigation bar)
-  Level 5 (+14% primary overlay): #34323A  (modal scrim above)
-```
-
-### Color Adjustments in Dark Mode
-
-- Saturated colors must be desaturated and lightened for dark backgrounds. A vivid red (#D32F2F) that works on white becomes #EF9A9A on dark (pastel, not vivid).
-- Do not use pure black (#000000) backgrounds — use dark grey (#121212 or #1C1B1F). Pure black creates excessive contrast against content and looks cheap.
-- Do not use pure white (#FFFFFF) body text on dark — use #E6E1E5 or similar off-white to reduce eye strain.
-- Reduce image brightness and saturation by 10–15% in dark mode so vivid images do not cause glare.
-
-### Common Dark Mode Mistakes
-
-```
-❌ Inverting all colors (white→black, black→white) — breaks semantic roles
-❌ Using the same shadow as light mode — invisible on dark surfaces
-❌ Pure black (#000000) app background — harsh, undesirable contrast
-❌ Same brand red/blue saturation — saturated hues are harsh on dark backgrounds
-❌ Forgetting to test: screenshots, maps, charts, third-party embeds
-```
-
-### Implementation Pattern
-
-Use CSS custom properties (or design tokens) so dark mode is a single token swap, not scattered overrides.
+Use CSS custom properties so dark mode is a single token swap:
 
 ```css
 :root {
@@ -318,24 +215,18 @@ Use CSS custom properties (or design tokens) so dark mode is a single token swap
     --color-primary: #D0BCFF;
   }
 }
-
-/* ✅ Components reference tokens, never hard-coded colors */
-.card {
-  background-color: var(--color-surface);
-  color: var(--color-on-surface);
-}
 ```
 
 ---
 
-## Decision Criteria Summary
+## Decision Criteria
 
-| Decision | Primary signal | Fallback |
-|---|---|---|
-| Font size below 16 px body? | Fail — increase to 14 px minimum; 16 px preferred | Accept 14 px only for secondary/metadata text |
-| Contrast below 4.5:1 for body text? | Fail — adjust foreground or background | Target ≥ 7:1 for AAA where feasible |
-| Spacing not on 4/8 px grid? | Reject — align to nearest grid value | 4 px increments for sub-component spacing |
-| Touch target below 44 pt / 48 dp? | Fail — add padding to extend hit area | Never reduce below 44×44 |
-| Icon without label in ambiguous context? | Add visible text label | Add aria-label at minimum |
-| Dark mode: using light-mode color directly? | Reject — create dedicated dark-mode tokens | Check every color role independently |
-| More than two typefaces? | Reject — remove one | Monospace for code is exempt from the limit |
+| Decision | Verdict |
+|---|---|
+| Body text contrast below 4.5:1? | Fail — adjust foreground or background |
+| Spacing not on 4/8 px grid? | Reject — align to nearest grid value |
+| Touch target below 44 pt / 48 dp? | Fail — add padding to extend hit area |
+| Icon without label in ambiguous context? | Add visible text label or aria-label |
+| Dark mode using light-mode color directly? | Reject — create dedicated dark-mode tokens |
+| More than two typefaces? | Reject — remove one (monospace for code is exempt) |
+| Fourth level of visual hierarchy? | Reject — consolidate or promote a level |

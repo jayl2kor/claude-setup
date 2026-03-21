@@ -81,7 +81,7 @@ argument-hint: <project description>
 |------|----------|
 | API 서버 (FastAPI, Express, Spring, Go HTTP 등) | Skill: `backend-patterns` |
 | React / Vue / Next.js / Svelte / 프론트엔드 프레임워크 | Skill: `frontend-patterns` |
-| UI 컴포넌트 설계 또는 디자인 시스템 언급 | Skill: `ui-design-principles`, `ux-design-principles` |
+| UI 컴포넌트 설계 또는 디자인 시스템 언급 | Agent: `ui-designer`, `ux-designer` |
 | 풀스택 (프론트+백 모두) | 위 frontend + backend 둘 다 |
 | 웹 서비스 / 마케팅 사이트 / 콘텐츠 중심 서비스 | Skill: `seo` |
 | Next.js / Nuxt / 서버사이드 렌더링 언급 | Skill: `seo` |
@@ -175,13 +175,11 @@ deny: []
 
 `docs/requirements.md`의 `Skills Needed`와 `Agents Needed`를 이 플러그인의 번들 목록과 대조합니다.
 
-**번들된 Agents**: `code-reviewer`, `security-reviewer`, `domain-researcher`
+**번들된 Agents**: `code-reviewer`, `security-reviewer`, `domain-researcher`, `ui-designer`, `ux-designer`
 
 **번들된 Skills**:
 - `backend-patterns` — API, DB, 마이크로서비스 아키텍처
 - `frontend-patterns` — 컴포넌트 설계, 상태 관리
-- `ui-design-principles` — 시각 디자인, 타이포그래피, 색상
-- `ux-design-principles` — 사용성, 인터랙션, 접근성
 - `code-formatting` — 린트, 포매팅, 코드 스타일
 - `antipattern-detection` — 안티패턴 감지 및 교정
 - `deep-research` — 도메인 심층 리서치
