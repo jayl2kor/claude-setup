@@ -1,0 +1,27 @@
+{
+  "name": "jayl2kor-claude-setup",
+  "owner": {
+    "name": "jayl2kor",
+    "email": "jayl2kor@gmail.com"
+  },
+  "metadata": {
+    "description": "Claude environment setup automation plugin",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "claude-setup",
+      "source": ".",
+      "description": "Guided Claude environment setup for new projects. Automates CLAUDE.md, agents, skills, memory, and permissions configuration through interactive requirements gathering and intelligent skill matching.",
+      "version": "1.0.0",
+      "author": {
+        "name": "jayl2kor",
+        "email": "jayl2kor@gmail.com"
+      },
+      "homepage": "https://github.com/jayl2kor/claude-setup",
+      "repository": "https://github.com/jayl2kor/claude-setup",
+      "license": "MIT",
+      "keywords": ["setup", "scaffolding", "agents", "skills", "memory", "onboarding"]
+    }
+  ]
+}
