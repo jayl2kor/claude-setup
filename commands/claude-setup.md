@@ -13,6 +13,63 @@ argument-hint: <project description>
 
 ---
 
+## Pre-flight: 기존 설정 감지
+
+**Phase 1 시작 전**, 아래 파일/디렉터리의 존재 여부를 확인합니다:
+- `CLAUDE.md`
+- `docs/requirements.md`
+- `docs/plan.md`
+- `.claude/` 디렉터리
+
+### 신규 프로젝트 (아무것도 없음)
+
+그대로 Phase 1로 진행합니다.
+
+### 기존 설정 감지 (하나라도 존재)
+
+발견된 파일 목록을 출력하고 모드를 선택받습니다:
+
+```
+기존 Claude 설정이 감지됐습니다:
+  ✅ CLAUDE.md
+  ✅ docs/requirements.md
+  ✅ .claude/
+
+진행 방식을 선택해 주세요:
+  1. Update — 기존 파일을 읽고 변경된 부분만 반영합니다
+  2. Reset  — 기존 파일을 백업 후 처음부터 재생성합니다
+  3. Abort  — 취소합니다
+```
+
+#### Mode: Update
+
+기존 파일을 모두 읽어 컨텍스트를 파악한 뒤, 변경된 부분만 반영합니다.
+
+| 파일 | 동작 |
+|------|------|
+| `docs/requirements.md` | 읽어서 Phase 1의 seed로 사용. 기존 요구사항 요약 출력 후 "변경된 사항만 말씀해 주세요"로 질문 간소화 |
+| `CLAUDE.md` | 읽어서 기존 커스텀 섹션 보존. 새 정보만 병합하여 재작성 |
+| `.claude/agents/*.md` | 기존 에이전트 목록 확인. 새 에이전트만 추가, 기존 것은 유지 |
+| `.claude/skills/` | 기존 스킬 유지, 신규만 추가 |
+| `.claude/settings.json` | 기존 permissions/hooks 읽어서 병합 (덮어쓰지 않음) |
+| `memory/*.md` | 덮어쓰지 않음. 새 seed 파일만 추가 |
+| `docs/plan.md` | 읽어서 완료된 Phase 보존. 새 Phase/태스크만 추가 또는 갱신 |
+
+Phase 2~5는 동일하게 진행하되, 각 파일 작성 시 기존 내용과 **병합(merge)** 처리합니다.
+
+#### Mode: Reset
+
+1. 기존 파일을 `.claude-setup-backup-<YYYYMMDD-HHMMSS>/`에 백업:
+   - `CLAUDE.md`, `docs/`, `.claude/` 복사
+2. 백업 경로 출력 후 확인 요청
+3. 확인 시 Phase 1부터 신규 프로젝트와 동일하게 진행
+
+#### Mode: Abort
+
+아무 파일도 변경하지 않고 종료합니다.
+
+---
+
 ## Phase 1: 요구사항 수집
 
 **목표**: 프로젝트를 이해하고 Claude 환경 설정에 필요한 정보를 수집합니다.
