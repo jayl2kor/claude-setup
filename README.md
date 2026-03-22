@@ -13,12 +13,21 @@ One command — `/claude-setup <project description>` — and you get:
 
 ## Installation
 
-```bash
-# Install directly from local path
-claude plugin install /path/to/claude-setup
+### Remote (no clone required)
 
-# Or clone and install
-git clone <repo-url>
+```bash
+# 1. Register the marketplace
+/plugin marketplace add jayl2kor/claude-setup
+
+# 2. Install the plugin
+/plugin install claude-setup@jayl2kor-claude-setup
+```
+
+### Local
+
+```bash
+# From a local clone
+git clone https://github.com/jayl2kor/claude-setup.git
 claude plugin install ./claude-setup
 ```
 
