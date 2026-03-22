@@ -41,87 +41,12 @@ ENCODED_PATH=$(echo "$PWD" | sed 's|/|-|g')
 MEMORY_DIR="$HOME/.claude/projects/${ENCODED_PATH}/memory"
 ```
 
-**항상 생성하는 기본 파일들** (모든 프로젝트):
-
-#### MEMORY.md — 인덱스 (세션마다 자동 로드되는 첫 200줄)
-
-```markdown
-# Memory Index — <프로젝트명>
-
-## 프로젝트 현황
-
-- [session-log.md](session-log.md) — 완료된 작업 로그 및 현재 진행 상황
-- [architecture.md](architecture.md) — 결정된 아키텍처·설계 사항
-- `docs/plan.md` — 구현 로드맵 및 단계별 태스크 (Phase 5에서 생성)
-
-## 컨벤션 & 피드백
-- [feedback-conventions.md](feedback-conventions.md) — 코드 스타일, 네이밍 규칙
-
-## 참조
-- [debugging.md](debugging.md) — 발견된 버그·해결책·주의사항
-```
-
-#### session-log.md — /clear 전 작업 요약을 축적하는 파일
-
-```markdown
----
-name: session-log
-description: /clear 전 저장한 작업 완료 로그. 새 세션 시작 시 현재 진행 상황 파악에 사용.
-type: project
----
-
-# Session Log
-
-## <날짜> — 초기 설정
-- claude-setup으로 프로젝트 환경 구성 완료
-- 생성된 파일: CLAUDE.md, .claude/agents/, .claude/settings.json
-```
-
-#### architecture.md — 설계 결정 사항
-
-```markdown
----
-name: architecture
-description: 결정된 아키텍처·기술 선택 사항. 새 세션에서 설계 컨텍스트 복원에 사용.
-type: project
----
-
-# Architecture Decisions
-
-<Phase 1에서 파악된 아키텍처 내용>
-```
-
-`<Phase 1에서 파악된 아키텍처 내용>` 부분은 `docs/requirements.md`의 아키텍처 관련 내용으로 채웁니다.
-
-#### feedback-conventions.md — 컨벤션 피드백
-
-```markdown
----
-name: feedback-conventions
-description: 프로젝트 코드 컨벤션 및 사용자 피드백. 새 세션에서도 일관성 유지.
-type: feedback
----
-
-# Conventions & Feedback
-
-<Phase 1에서 파악된 코드 스타일·컨벤션>
-```
-
-`<Phase 1에서 파악된 코드 스타일·컨벤션>` 부분은 `docs/requirements.md`의 코드 스타일·컨벤션 내용으로 채웁니다.
-
-#### debugging.md — 디버깅 기록 (초기 빈 파일로 생성)
-
-```markdown
----
-name: debugging
-description: 발견된 버그, 해결책, 주의사항. 같은 문제 반복 방지.
-type: feedback
----
-
-# Debugging Log
-
-(작업 중 버그·해결책 발견 시 여기에 기록)
-```
+`agents/references/memory-templates.md`를 읽고, `docs/requirements.md` 내용으로 각 템플릿의 `<...>` 부분을 채워 아래 5개 파일을 생성합니다:
+- `MEMORY.md` — 인덱스 (세션마다 자동 로드)
+- `session-log.md` — 작업 완료 로그
+- `architecture.md` — 아키텍처 결정 사항 (`docs/requirements.md`의 아키텍처 섹션으로 채움)
+- `feedback-conventions.md` — 코드 컨벤션 (`docs/requirements.md`의 코드 스타일 섹션으로 채움)
+- `debugging.md` — 디버깅 기록 (빈 파일로 시작)
 
 **추가 Memory Seeds 처리**: `docs/requirements.md`의 `Memory Seeds` 항목에 추가 seed가 있으면 위 기본 파일들에 병합하여 생성합니다.
 
@@ -129,102 +54,16 @@ type: feedback
 
 ### Step 5: .claude/settings.json 생성
 
-`docs/requirements.md`의 `Permissions`와 `Hooks` 섹션을 기반으로 아래 기본값에 **병합**하여 최종 파일을 생성합니다.
+`agents/references/hook-examples.md`를 읽고, 아래 조건에 따라 포함할 훅을 선택하여 `docs/requirements.md`의 `Permissions`·`Hooks` 섹션과 병합합니다.
 
-#### 기본 포함 hooks (모든 프로젝트)
+**포함 조건**:
+- **Stop Hook**: 항상 포함
+- **PostToolUse Security**: `docs/requirements.md`에 인증·인가·API·결제·사용자 데이터 관련 항목이 있는 경우
+- **PostToolUse backend-developer**: `Agents Needed`에 `backend-developer`가 있는 경우
+- **PostToolUse frontend-developer**: `Agents Needed`에 `frontend-developer`가 있는 경우
+- **PostToolUse ml-engineer**: `Agents Needed`에 `ml-engineer`가 있는 경우
 
-```json
-{
-  "permissions": {
-    "allow": [],
-    "deny": []
-  },
-  "hooks": {
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo '\\n💡 Quality Gate 체크리스트:\\n  기능 구현 완료? → /simplify 실행 후 code-reviewer 호출\\n  보안 코드 변경? → security-reviewer 호출\\n  PR 준비? → /code-review 실행'"
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-#### 보안 크리티컬 프로젝트 추가 hook
-
-`docs/requirements.md`에 보안 관련 항목(인증·인가·API·결제·사용자 데이터)이 있는 경우 `PostToolUse` 배열에 추가합니다:
-
-```json
-"PostToolUse": [
-  {
-    "matcher": "Write|Edit",
-    "hooks": [
-      {
-        "type": "command",
-        "command": "bash -c 'echo \"$CLAUDE_TOOL_INPUT\" | grep -qiE \"password|secret|token|key|auth|jwt|session|credential\" && echo \"🔒 보안 관련 코드 변경 감지 — security-reviewer 에이전트를 실행하세요\" || true'"
-      }
-    ]
-  }
-]
-```
-
-**참고**: 이 보안 hook은 파일 경로가 아닌 파일 **내용**에서 키워드를 스캔합니다. 따라서 `$CLAUDE_TOOL_INPUT` 전체를 grep하는 기존 방식을 유지합니다.
-
-#### 스택별 에이전트 감지 hook (수정된 2단계 패턴 사용)
-
-`docs/requirements.md`의 `Agents Needed`에 해당 에이전트가 있는 경우, 위 `PostToolUse` 배열에 추가합니다.
-
-**중요**: 아래 hook들은 `$CLAUDE_TOOL_INPUT` 전체를 grep하면 파일 내용에서 false positive가 발생합니다. 반드시 `grep -oE`로 `file_path` 필드 값만 추출한 후 경로 패턴을 매칭하는 2단계 패턴을 사용합니다.
-
-`backend-developer` 에이전트가 있는 경우:
-```json
-{
-  "matcher": "Write|Edit",
-  "hooks": [
-    {
-      "type": "command",
-      "command": "bash -c 'printf \"%s\" \"$CLAUDE_TOOL_INPUT\" | grep -oE \"\\\"file_path\\\"[[:space:]]*:[[:space:]]*\\\"[^\\\"]+\\\"\" | grep -qiE \"/(routes|controllers|handlers|api|endpoints|views)/\" && echo \"🏗️  서버/API 코드 감지 — backend-developer 에이전트를 호출하세요\" || true'"
-    }
-  ]
-}
-```
-
-`frontend-developer` 에이전트가 있는 경우:
-```json
-{
-  "matcher": "Write|Edit",
-  "hooks": [
-    {
-      "type": "command",
-      "command": "bash -c 'printf \"%s\" \"$CLAUDE_TOOL_INPUT\" | grep -oE \"\\\"file_path\\\"[[:space:]]*:[[:space:]]*\\\"[^\\\"]+\\\"\" | grep -qiE \"/(components|pages|views)/.*\\.(tsx|jsx|vue|svelte)\" && echo \"🎨 UI 컴포넌트 코드 감지 — frontend-developer 에이전트를 호출하세요\" || true'"
-    }
-  ]
-}
-```
-
-`ml-engineer` 에이전트가 있는 경우:
-```json
-{
-  "matcher": "Write|Edit",
-  "hooks": [
-    {
-      "type": "command",
-      "command": "bash -c 'printf \"%s\" \"$CLAUDE_TOOL_INPUT\" | grep -oE \"\\\"file_path\\\"[[:space:]]*:[[:space:]]*\\\"[^\\\"]+\\\"\" | grep -qiE \"(train|model|pipeline|dataset|evaluate|inference)\" && echo \"🤖 ML 코드 감지 — ml-engineer 에이전트를 호출하세요\" || true'"
-    }
-  ]
-}
-```
-
-**2단계 패턴 동작 설명**:
-1. `grep -oE '"file_path"[[:space:]]*:[[:space:]]*"[^"]+"'` — JSON에서 `file_path` 키-값 쌍만 추출 (파일 내용 제외)
-2. `grep -qiE "<경로 패턴>"` — 추출된 경로 값에만 패턴 매칭
-
-이렇게 하면 파일 내용에 경로와 유사한 문자열이 포함되어 있어도 false positive가 발생하지 않습니다.
+각 훅의 정확한 JSON은 `agents/references/hook-examples.md`의 해당 섹션을 그대로 사용합니다.
 
 ---
 
