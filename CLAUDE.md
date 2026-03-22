@@ -1,13 +1,13 @@
 # claude-setup Plugin
 
-새 프로젝트의 Claude 환경 설정을 자동화하는 플러그인. `/claude-setup <설명>` 한 번으로 대화형 요구사항 수집 → `docs/requirements.md` 생성 → skill 리서치 → Claude 환경 자동 구성 → Plan Mode로 `docs/plan.md` 구현 계획 수립까지 수행한다.
+새 프로젝트의 Claude 환경 설정을 자동화하는 플러그인. `/claude-setup:run <설명>` 한 번으로 대화형 요구사항 수집 → `docs/requirements.md` 생성 → skill 리서치 → Claude 환경 자동 구성 → Plan Mode로 `docs/plan.md` 구현 계획 수립까지 수행한다.
 
 ## 구조
 
 ```
 claude-setup/
 ├── .claude-plugin/plugin.json       # 플러그인 매니페스트
-├── commands/claude-setup.md         # /claude-setup 메인 오케스트레이터 (Phase 1~5)
+├── commands/run.md                  # /claude-setup:run 메인 오케스트레이터 (Phase 1~5)
 ├── agents/
 │   ├── domain-researcher.md         # 외부 skill 검색 (Phase 3 병렬 실행)
 │   ├── code-reviewer.md             # 코드 품질 리뷰 (독립 사용 가능)
@@ -60,7 +60,7 @@ claude plugin install /Users/user/git/claude-setup
 
 # 테스트 실행
 mkdir /tmp/test-project && cd /tmp/test-project
-/claude-setup "FastAPI 기반 사용자 인증 마이크로서비스"
+/claude-setup:run "FastAPI 기반 사용자 인증 마이크로서비스"
 
 # 각 Phase 게이트 동작 확인
 # requirements.md 생성 확인
@@ -72,4 +72,4 @@ mkdir /tmp/test-project && cd /tmp/test-project
 1. 해당 도메인 deep-research 선행 (WebFetch/WebSearch로 공식 문서, RFC, 베스트 프랙티스 조사)
 2. 구체적이고 실행 가능한 지침 작성 (단순 요약 X, 판단 기준 포함)
 3. 좋은 예시 vs 나쁜 예시 포함
-4. `commands/claude-setup.md`의 번들 목록 업데이트
+4. `commands/run.md`의 번들 목록 업데이트

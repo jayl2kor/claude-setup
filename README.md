@@ -2,7 +2,7 @@
 
 > A Claude Code plugin that automatically configures the Claude environment for new projects
 
-One command — `/claude-setup <project description>` — and you get:
+One command — `/claude-setup:run <project description>` — and you get:
 - Interactive requirements gathering and `docs/requirements.md` generation
 - Automatic research for relevant official/community skills
 - Auto-configuration of `CLAUDE.md`, agents, skills, memory, and permissions
@@ -37,12 +37,12 @@ claude plugin install ./claude-setup
 
 ```bash
 # Run in a new project directory
-/claude-setup "FastAPI-based user authentication microservice"
-/claude-setup "React + TypeScript e-commerce platform"
-/claude-setup "Go CLI tool for Kubernetes cluster management"
+/claude-setup:run "FastAPI-based user authentication microservice"
+/claude-setup:run "React + TypeScript e-commerce platform"
+/claude-setup:run "Go CLI tool for Kubernetes cluster management"
 
 # Start without a description (Claude will ask)
-/claude-setup
+/claude-setup:run
 ```
 
 ### Phases
