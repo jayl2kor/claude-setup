@@ -11,7 +11,7 @@
   "plugins": [
     {
       "name": "claude-setup",
-      "source": ".",
+      "source": "./",
       "description": "Guided Claude environment setup for new projects. Automates CLAUDE.md, agents, skills, memory, and permissions configuration through interactive requirements gathering and intelligent skill matching.",
       "version": "1.0.0",
       "author": {
