@@ -7,17 +7,27 @@
 ```
 claude-setup/
 ├── .claude-plugin/plugin.json       # 플러그인 매니페스트
-├── commands/run.md                  # /claude-setup:run 메인 오케스트레이터 (Phase 1~5)
+├── commands/run.md                  # /claude-setup:run 린 오케스트레이터 (~80줄)
 ├── agents/
+│   ├── setup-preflight.md           # Pre-flight 감지 (Update/Reset/Abort)
+│   ├── setup-phase1.md              # Phase 1: 요구사항 수집
+│   ├── setup-phase2.md              # Phase 2: requirements.md 생성
+│   ├── setup-phase3.md              # Phase 3: 번들 매칭 + 외부 리서치
+│   ├── setup-phase4-files.md        # Phase 4a: CLAUDE.md + 에이전트 + 스킬 생성
+│   ├── setup-phase4-infra.md        # Phase 4b: memory + settings.json 생성
+│   ├── setup-phase5.md              # Phase 5: Plan Mode + docs/plan.md
+│   ├── backend-developer.md         # 번들 백엔드 개발자 (스택별 Notes 동적 추가)
+│   ├── frontend-developer.md        # 번들 프론트엔드 개발자 (프레임워크별 Notes 동적 추가)
+│   ├── ml-engineer.md               # 번들 ML 엔지니어 (프레임워크별 Notes 동적 추가)
 │   ├── domain-researcher.md         # 외부 skill 검색 (Phase 3 병렬 실행)
 │   ├── code-reviewer.md             # 코드 품질 리뷰 (독립 사용 가능)
-│   └── security-reviewer.md         # 보안 취약점 검토 (독립 사용 가능)
+│   ├── security-reviewer.md         # 보안 취약점 검토 (독립 사용 가능)
+│   ├── ui-designer.md               # UI 시각 디자인 (독립 사용 가능)
+│   └── ux-designer.md               # UX 인터랙션 설계 (독립 사용 가능)
 └── skills/
     ├── deep-research/               # 체계적 기술 조사 방법론
     ├── backend-patterns/            # REST, clean arch, CQRS, DB 패턴
     ├── frontend-patterns/           # 컴포넌트 설계, 상태 관리, 성능
-    ├── ui-design-principles/        # 시각 디자인, 타이포그래피, 색상
-    ├── ux-design-principles/        # 사용성, 인터랙션, 접근성
     ├── code-formatting/             # 린트, 포매팅, 언어별 스타일 가이드
     ├── antipattern-detection/       # GoF 안티패턴, SOLID 위반, 언어별 패턴
     ├── e2e-testing/                 # Playwright, 테스트 피라미드, CI 통합
@@ -41,6 +51,9 @@ claude-setup/
 |---------|------|--------|
 | `code-reviewer` | agent | 코드 리뷰, PR 검토 시 |
 | `security-reviewer` | agent | 인증/인가, API, 민감 데이터 코드 작성 시 |
+| `backend-developer` | agent | API 서버 설계·구현, DB 스키마, 서버 로직 시 (스택별 Notes 자동 추가) |
+| `frontend-developer` | agent | UI 컴포넌트 설계·구현, 상태 관리, 성능 최적화 시 (프레임워크별 Notes 자동 추가) |
+| `ml-engineer` | agent | ML 파이프라인 설계·구현, 모델 학습·배포 시 (프레임워크별 Notes 자동 추가) |
 | `ui-designer` | agent | UI 구현, 화면 레이아웃, 디자인 시스템 설계 시 |
 | `ux-designer` | agent | 사용자 플로우, 인터랙션, 접근성 설계 시 |
 | `domain-researcher` | agent | 외부 skill 검색 필요 시 (Phase 3) |
